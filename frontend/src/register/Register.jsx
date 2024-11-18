@@ -2,9 +2,12 @@ import axios from "axios";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useAuth } from "../context/AuthContext";
 
 const Register = () => {
   const navigate = useNavigate();
+
+  const { setAuthUser } = useAuth();
 
   const [loading, setLoading] = useState(false);
 
@@ -47,6 +50,8 @@ const Register = () => {
       toast.success(data?.message);
 
       localStorage.setItem("relay", JSON.stringify(data));
+
+      setAuthUser(data);
 
       setLoading(false);
 

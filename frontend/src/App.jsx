@@ -3,6 +3,8 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Route, Routes } from "react-router-dom";
 import Register from "./register/Register";
+import Home from "./Home/Home";
+import { VerifyUser } from "./utils/VerifyUser";
 
 function App() {
   return (
@@ -11,6 +13,9 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route element={<VerifyUser />}>
+            <Route path="/" element={<Home />} />
+          </Route>
         </Routes>
         <ToastContainer />
       </div>

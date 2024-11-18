@@ -3,9 +3,11 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { setAuthUser } = useAuth();
   const [userInput, setUserInput] = useState({});
   const [loading, setLoading] = useState(false);
 
@@ -33,6 +35,8 @@ const Login = () => {
       toast.success(data.message);
 
       localStorage.setItem("relay", JSON.stringify(data));
+
+      setAuthUser(data);
 
       setLoading(false);
 
