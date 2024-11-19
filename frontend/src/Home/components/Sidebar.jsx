@@ -6,7 +6,7 @@ import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
-  const navigate = useNavigate([]);
+  const navigate = useNavigate();
   const { authUser, setAuthUser } = useAuth();
   const [searchInput, setSearchInput] = useState("");
   const [searchUser, setSearchUser] = useState([]);
@@ -17,11 +17,14 @@ const Sidebar = () => {
   useEffect(() => {
     const chatUserHandler = async () => {
       setLoading(true);
+
       try {
         const chats = await axios.get(`/api/user/currentchats`);
         const data = chats.data;
+
         if (data.success === false) {
           setLoading(false);
+
           console.log(data.message);
         }
 
@@ -30,13 +33,14 @@ const Sidebar = () => {
         setChatUser(data);
       } catch (error) {
         setLoading(false);
+
         console.log(error);
       }
     };
-    chatUserHandler;
+    chatUserHandler();
   }, []);
-
-  const handleSearch = async (e) => {
+  console.log(chatUser);
+  const handleSearchSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
@@ -100,7 +104,7 @@ const Sidebar = () => {
     <div className="h-full w-auto px-1">
       <div className="flex justify-between gap-2 mt-2">
         <form
-          onSubmit={handleSearch}
+          onSubmit={handleSearchSubmit}
           className="w-auto flex items-center justify-between bg-white rounded-full"
         >
           <input
@@ -123,14 +127,14 @@ const Sidebar = () => {
       <div className="divider divide-solid px-3"></div>
       {searchUser?.length > 0 ? (
         <>
-          <div className="min-h-[70%] max-h-[80%] overflow-y-auto scrollbar">
+          <div className="min-h-[70%] max-h-[80%]  scrollbar">
             <div className="w-auto">
-              {searchUser.map((user, index) => {
+              {searchUser.map((user) => (
                 <div key={user._id}>
                   <div
-                    onClick={() => handleUserClick()}
+                    onClick={() => handleUserClick(user)}
                     className={`flex gap-3 items-center rounded p-2 py-1 cursor-pointer ${
-                      selectedUserId === user?._id ? "bg-sky-500" : ""
+                      selectedUserId === user?._id ? "bg-cyan-500" : ""
                     }`}
                   >
                     <div className="avatar">
@@ -143,8 +147,8 @@ const Sidebar = () => {
                     </div>
                   </div>
                   <div className="divider divide-solid px-3 h-[1px]"></div>
-                </div>;
-              })}
+                </div>
+              ))}
             </div>
           </div>
           <div className="mt-auto px-1 py-1 flex">
@@ -158,7 +162,7 @@ const Sidebar = () => {
         </>
       ) : (
         <>
-          <div className="min-h-[70%] max-h-[80%] overflow-y-auto scrollbar">
+          <div className="min-h-[70%] max-h-[80%] m overflow-y-auto scrollbar">
             <div className="w-auto">
               {chatUser.length === 0 ? (
                 <>
@@ -169,12 +173,12 @@ const Sidebar = () => {
                 </>
               ) : (
                 <>
-                  {chatUser.map((user, index) => {
+                  {chatUser.map((user, index) => (
                     <div key={user._id}>
                       <div
-                        onClick={() => handleUserClick()}
+                        onClick={() => handleUserClick(user)}
                         className={`flex gap-3 items-center rounded p-2 py-1 cursor-pointer ${
-                          selectedUserId === user?._id ? "bg-sky-500" : ""
+                          selectedUserId === user?._id ? "bg-cyan-500" : ""
                         }`}
                       >
                         <div className="avatar">
@@ -189,8 +193,8 @@ const Sidebar = () => {
                         </div>
                       </div>
                       <div className="divider divide-solid px-3 h-[1px]"></div>
-                    </div>;
-                  })}
+                    </div>
+                  ))}
                 </>
               )}
             </div>

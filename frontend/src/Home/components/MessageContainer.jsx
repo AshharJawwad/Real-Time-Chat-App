@@ -2,8 +2,8 @@
 
 const MessageContainer = () => {
   return (
-    <div>
-      MessageContainer
+    <div className="md:min-w-[500px] h-full flex-col py">
+      
     </div>
   )
 }
