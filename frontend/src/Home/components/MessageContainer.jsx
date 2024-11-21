@@ -8,12 +8,7 @@ import { useSocketContext } from "../../context/socketContext";
 import notify from "../../assets/sounds/notification.wav";
 
 const MessageContainer = ({ onUserBack }) => {
-  const {
-    messages,
-    selectedConversation,
-    setMessage,
-    setSelectedConversation,
-  } = userConversation();
+  const { messages, selectedConversation, setMessage } = userConversation();
   const { socket } = useSocketContext();
   const { authUser } = useAuth();
   const [loading, setLoading] = useState(false);

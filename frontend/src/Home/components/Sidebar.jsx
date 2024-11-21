@@ -18,8 +18,6 @@ const Sidebar = ({ onSelectUser }) => {
   const [newMessageUsers, setNewMessageUsers] = useState("");
   const {
     messages,
-    setMessage,
-    selectedConversation,
     setSelectedConversation,
   } = userConversation();
   const { onlineUser, socket } = useSocketContext();
