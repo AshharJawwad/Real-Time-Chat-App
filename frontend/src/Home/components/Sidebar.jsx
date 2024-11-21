@@ -4,8 +4,10 @@ import { toast } from "react-toastify";
 import { IoSearch, IoArrowBack, IoLogOutOutline } from "react-icons/io5";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import userConversation from "../../zustand/useConversation";
+import { useSocketContext } from "../../context/socketContext";
 
-const Sidebar = () => {
+const Sidebar = ({ onSelectUser }) => {
   const navigate = useNavigate();
   const { authUser, setAuthUser } = useAuth();
   const [searchInput, setSearchInput] = useState("");
@@ -13,6 +15,26 @@ const Sidebar = () => {
   const [chatUser, setChatUser] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null);
+  const [newMessageUsers, setNewMessageUsers] = useState("");
+  const {
+    messages,
+    setMessage,
+    selectedConversation,
+    setSelectedConversation,
+  } = userConversation();
+  const { onlineUser, socket } = useSocketContext();
+
+  const nowOnline = chatUser.map((user) => user._id);
+
+  const isOnline = nowOnline.map((userId) => onlineUser.includes(userId));
+
+  useEffect(() => {
+    socket?.on("newMessage", (newMessage) => {
+      setNewMessageUsers(newMessage);
+    });
+
+    return () => socket?.off("newMessage");
+  }, [socket, messages]);
 
   useEffect(() => {
     const chatUserHandler = async () => {
@@ -39,7 +61,7 @@ const Sidebar = () => {
     };
     chatUserHandler();
   }, []);
-  console.log(chatUser);
+
   const handleSearchSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -67,7 +89,10 @@ const Sidebar = () => {
   };
 
   const handleUserClick = (user) => {
+    onSelectUser(user);
+    setSelectedConversation(user);
     setSelectedUserId(user._id);
+    setNewMessageUsers("");
   };
 
   const handleSearchBack = () => {
@@ -129,7 +154,7 @@ const Sidebar = () => {
         <>
           <div className="min-h-[70%] max-h-[80%]  scrollbar">
             <div className="w-auto">
-              {searchUser.map((user) => (
+              {searchUser.map((user, index) => (
                 <div key={user._id}>
                   <div
                     onClick={() => handleUserClick(user)}
@@ -137,7 +162,9 @@ const Sidebar = () => {
                       selectedUserId === user?._id ? "bg-cyan-500" : ""
                     }`}
                   >
-                    <div className="avatar">
+                    <div
+                      className={`avatar ${isOnline[index] ? "online" : ""}`}
+                    >
                       <div className="w-12 h-12 rounded-full">
                         <img src={user.profileimage} alt="" />
                       </div>
@@ -181,7 +208,11 @@ const Sidebar = () => {
                           selectedUserId === user?._id ? "bg-cyan-500" : ""
                         }`}
                       >
-                        <div className="avatar">
+                        <div
+                          className={`avatar ${
+                            isOnline[index] ? "online" : ""
+                          }`}
+                        >
                           <div className="w-12 h-12 rounded-full">
                             <img src={user.profileimage} alt="" />
                           </div>
@@ -190,6 +221,13 @@ const Sidebar = () => {
                           <p className="font-bold text-gray-950">
                             {user.username}
                           </p>
+                        </div>
+                        <div>
+                          { newMessageUsers.reciverId === authUser._id && newMessageUsers.senderId === user._id ?
+                          <div className="rounded-full bg-green-700 text-sm text-white px-[4px]">
+                            +1
+                          </div> : <></>
+                          }
                         </div>
                       </div>
                       <div className="divider divide-solid px-3 h-[1px]"></div>
