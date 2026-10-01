@@ -1,6 +1,6 @@
 import { useState } from "react";
-import MessageContainer from "./components/MessageContainer";
-import Sidebar from "./components/Sidebar";
+import MessageContainer from "./components/messagecontainer";
+import Sidebar from "./components/sidebar";
 
 const Home = () => {
   const [selectedUser, setSelectedUser] = useState(null);
