@@ -1,33 +1,54 @@
+
 name: Deploy Vite App
 
 on:
-   push:
-      branches: ["main"]
+  push:
+    branches: ["main"]
 
 permissions:
-   contents: read
-   pages: write
-   id-token: write
+  contents: read
+  pages: write
+  id-token: write
 
 concurrency:
-    group: "pages"
-    cancel-in-progress: true
+  group: "pages"
+  cancel-in-progress: true
 
 jobs:
-   deploy:
-      environment:
-         name: github-pages
-         url: ${{ steps.deployment.outputs.page_url }}
-      runs-on: ubuntu-latest
-      steps:
-         - name: Checkout code
-           uses: actions/checkout@v4
-           
-         - name: Upload artifact
-            uses: actions/upload-pages-artifact@v3
-            width:
-                path: './frontend'
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
-         - name: Deploy to GitHub Pages
-            id: deployment
-            uses: actions/deploy-pages@v4
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        working-directory: ./frontend
+        run: npm ci
+
+      - name: Build Vite app
+        working-directory: ./frontend
+        run: npm run build
+
+      - name: Setup GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./frontend/dist
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
