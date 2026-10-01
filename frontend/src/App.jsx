@@ -2,9 +2,9 @@ import Login from "./login/login";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
-import Register from "./register/Register";
+import Register from "./register/register";
 import Home from "./home/home";
-import { VerifyUser } from "./utils/VerifyUser";
+import { VerifyUser } from "./utils/verifyUser";
 
 function App() {
   return (
