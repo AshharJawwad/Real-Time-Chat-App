@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { IoSearch, IoArrowBack, IoLogOutOutline } from "react-icons/io5";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../context/authContext";
 import { useNavigate } from "react-router-dom";
 import userConversation from "../../zustand/useConversation";
 import { useSocketContext } from "../../context/socketContext";
