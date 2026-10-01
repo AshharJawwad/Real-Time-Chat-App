@@ -6,7 +6,7 @@ import { AuthContextProvider } from "./context/AuthContext.jsx";
 import { SocecketContextProvider } from "./context/socketContext.jsx";
 
 createRoot(document.getElementById("root")).render(
-  <BrowserRouter>
+  <BrowserRouter basename="/Real-Time-Chat-App/">
     <AuthContextProvider>
       <SocecketContextProvider>
         <App />
