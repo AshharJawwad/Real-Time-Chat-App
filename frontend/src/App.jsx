@@ -10,7 +10,6 @@ function App() {
   return (
     <>
       <div className="p-2 w-screen h-screen flex items-center justify-center">
-        <BrowserRouter basename="/Real-Time-Chat-App/">
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
@@ -18,7 +17,6 @@ function App() {
             <Route path="/" element={<Home />} />
           </Route>
         </Routes>
-          </BrowserRouter>
         <ToastContainer />
       </div>
     </>
