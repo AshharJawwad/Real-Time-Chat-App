@@ -1,5 +1,5 @@
 import { IoArrowBack, IoSend } from "react-icons/io5";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../context/authContext";
 import userConversation from "../../zustand/useConversation";
 import { LuMessagesSquare } from "react-icons/lu";
 import { useEffect, useRef, useState } from "react";
