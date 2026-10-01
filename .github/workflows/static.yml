@@ -38,7 +38,7 @@ jobs:
 
       - name: Build Vite app
         working-directory: ./frontend
-        run: npm run build || true
+        run: npm run build
 
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v5
